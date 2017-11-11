@@ -1,4 +1,4 @@
-# injun-poker
+# Injun Poker
 Ever play that game where you kick a can around on the ground? What if
 that can was connected by bluetooth and you could keep track of the score!?
 
