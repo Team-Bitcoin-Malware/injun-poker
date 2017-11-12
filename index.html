@@ -2,89 +2,98 @@
 
 <html>
 	<head>
-		<title> Real Time Poker with Friends</title>
+		<title>Poker with Friends</title>
 			<!-- Load style sheet -->
-
 		<link href="index.css" media="screen" rel="stylesheet" type="text/css">
 
+
 	<!-- Library code -->
-
 		 	<!-- Load socket.io client side contents. -->
-
-		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
 	 		<!-- Load the GUI rendering library code. -->
-
 		<script type="text/javascript" src="lib/dat.gui.min.js"></script>
 
 			<!-- Load the keyboard specific code --> 
-
-		<script type="text/javascript" src="lib/keyboard.js"></script>
-
-	 
-	<!-- Game code -->
-
-	 		<!-- Load the common game code. -->
-
-		<script type="text/javascript" src="game.core.js"></script>
-
-			<!-- Finally, Load the game client code. -->
-
-		<script type="text/javascript" src="client.js"></script>		
+		<script type="text/javascript" src="lib/keyboard.js"></script>	
 
 	</head>
 
 	<body>
+
+		<br>
 		<!-- firs prompt -->
-		<div class="button-container" id="firstPrompt" >
-	      <button id="btn-new-game" onclick="newGamePrompt()">>New Game</button>
-	      <button id="btn-join-game" onclick="joinGamePrompt()">>Join Game</button>
-	      <script type="text/javascript">
-	      	function newGamePrompt() {
-	      		document.getElementById("firstPrompt").setAttribute('hidden', 'true')
+		<div class="button-container" id="firstPrompt"  style="display: block ">
+	      <button id="btn-new-game" onclick="newGamePrompt()">New Game</button>
+	      <button id="btn-join-game" onclick="joinGamePrompt()">Join Game</button>
+	    </div>
+
+		<!-- new game prompt -->
+		<!--<form id="create-game" style="display: none "> -->
+	    <div id="create-game" style="display: none ">
+	      <input name="playerName" id="player-name" type="text" placeholder="Enter your name">
+
+	      <div class="button-container">
+	        <input type="submit" id="create" value="Create" onclick="sendCode()">
+	        <button class="btn-back" onclick="back()">Back</button>
+	      </div>
+	    </div>
+	  <!--</form>-->
+
+	<!-- join game prompt -->
+
+		<!--<form id="join-game" style="display: none ">-->
+	    <div id="join-game" style="display: none ">
+	      <input name="accessCode" id="access-code" type="text" placeholder="Enter an access code" autocorrect="off" autocapitalize="off">
+	      <input name="playerName" id="player-name" type="text" placeholder="Enter your name">
+
+	      <div class="button-container">
+	        <input type="submit" value="Join">
+	        <button class="btn-back" onclick="back()">Back</button>
+	      </div>
+	    </div>
+	  <!--</form>-->
+
+	  <!--game code -->
+	  <br>
+	  <p id="game-code">  </p>
+
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+		<script type="text/javascript">
+			document.getElementById("create").onclick = function sendCode() {
+
+				let playerName = document.getElementById("player-name")
+
+				axios.get("http://pokerwithfriends.tech/playerName")
+					.then(function(res) {
+						console.log(res)
+						document.getElementById("game-code").innerHTML = "Game Code: " + res
+					})
+					.catch(function(error) {
+						console.log(error)
+					});
+
+
+			}
+
+			function newGamePrompt() {
+	      		document.getElementById("firstPrompt").style.display="none"
 	      		document.getElementById("create-game").style.display="block"
 	      	}
 
 	      	function joinGamePrompt() {
-	      		document.getElementById("firstPrompt").setAttribute('hidden', 'true')
+	      		document.getElementById("firstPrompt").style.display="none"
 	      		document.getElementById("join-game").style.display="block"
 	      	}
-	      </script>
-	    </div>
 
-		<!-- new game prompt -->
-		<form id="create-game" style="display: none ">
-	    <div>
-	      <input name="playerName" id="player-name" type="text" placeholder="Enter your name">
-
-	      <div class="button-container">
-	        <input type="submit" value="Create">
-	        <button class="btn-back">Back</button>
-	      </div>
-	    </div>
-	  </form>
-
-	<!-- join game prompt -->
-
-		<form id="join-game" style="display: none ">
-	    <div>
-	      <input name="accessCode" id="access-code" type="text" placeholder="Enter an access code" autocorrect="off" autocapitalize="off">
-	      <input name="playerName" id="player-name" type="text" placeholder="Enter your name">
-
-	      
-
-	      <div class="button-container">
-	        <input type="submit" value="Join">
-	        <button class="btn-back">Back</button>
-	      </div>
-	    </div>
-	  </form>
-
-
-
-		<canvas id="viewport">
-
-		</canvas>
+	      	function back() {
+	      		document.getElementById("firstPrompt").style.display="block"
+	      		document.getElementById("join-game").style.display="none"
+	      		document.getElementById("create-game").style.display="none"
+	      		document.getElementById("game-code").innerHTML = ""
+	      	}
+		</script>
 
 	</body>
 
