@@ -17,9 +17,25 @@ exports.init = function () {
     return deck;
 }
 
+exports.toString = function (deck) {
+    var cardlist = "";
+    for (var i = 0; i < deck.cards.length; i++) {
+        cardlist += card.toString(deck.cards[i]) + "\n";
+    }
+    return cardlist;
+}
+
 exports.getDeck = function () {
     return {
-        deck: module.exports.init();
+        cards: module.exports.init(),
         
+        draw: function () {
+            var index = Math.floor(Math.random() * this.size()) 
+            return this.cards.splice(index, 1)[0]
+        },
+
+        size: function () {
+            return this.cards.length
+        }
     }    
 }
